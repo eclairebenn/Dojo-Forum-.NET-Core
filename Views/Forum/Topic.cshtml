@@ -1,0 +1,29 @@
+<h2>@ViewBag.Topic.Title
+    @if(User.IsInRole("Admin"))
+    {
+        <span><a href="/topic/delete/@ViewBag.Topic.TopicId">Delete Topic</a></span>
+    }
+</h2>
+<h4>@ViewBag.Topic.User.FirstName - @ViewBag.Topic.CreatedAt.ToString("MMM dd yyy")</h4>
+<h5>@ViewBag.Topic.TopicText</h5>
+<div class="comments">
+    @foreach(Comment comment in @ViewBag.Topic.Comments)
+    {
+        <h4>@comment.User.FirstName - @comment.CreatedAt.ToString("MMM dd yyyy")
+        @if(User.IsInRole("Admin"))
+        {
+            <span><a href="/comment/delete/@comment.CommentId">Delete</a></span>
+        }
+        else if (@ViewBag.User.Id == @comment.UserId)
+        {
+            <span><a href="/comment/delete/@comment.CommentId">Delete</a></span>
+        }</h4>
+        <h5>@comment.CommentText</h5>
+    }
+    <form action="/add/comment" method="post">
+        <textarea name="CommentText"></textarea>
+        <input type="hidden" name="TopicId" value="@ViewBag.Topic.TopicId">
+        <input type="submit" value="Comment">
+    </form> 
+</div>
+

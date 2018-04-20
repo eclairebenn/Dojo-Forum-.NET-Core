@@ -1,0 +1,43 @@
+<h2>Dojo Forum</h2>
+<table id="table" class="table-striped">
+    <tr>
+        <th>Category Name</th>
+        <th>Number of Topics</th>
+        <th>Moderators</th>
+        @if(User.IsInRole("Admin"))
+        {
+            <th>Options</th>
+        }
+    </tr>
+    @foreach(Category category in @ViewBag.Categories)
+    {
+        <tr>
+            <td><a href="/@category.Name">@category.Name</a></td>
+            <td>@category.Topics.Count</td>
+            <td>
+                @foreach(Moderator mod in @category.Moderators)
+                {
+                    <p>@mod.User.FirstName @mod.User.LastName</p>
+                }
+            </td>
+            @if(User.IsInRole("Admin"))            
+            {
+                <td><a href="/category/delete/@category.Name">Delete</a></td>
+            }
+
+        </tr>
+    }
+
+</table>
+@if(User.IsInRole("Admin"))
+{
+    <form action="/category/add" method="post">
+        <h3>Add a Category</h3>
+        <h5>Category Name</h5>
+        <input type="text" name="Name">
+        <input type="submit" value="Create Category">
+    </form>
+}
+
+
+<h2><a href="add/admin">Click here to add the user logged in to an admin position</a></h2>
